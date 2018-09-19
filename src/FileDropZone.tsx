@@ -8,6 +8,12 @@ import {connect} from 'react-redux'
 import {IAction} from './interface'
 import {fileLoad} from './actions'
 
+import styled from 'styled-components'
+
+const Dropbox = styled.div`
+  margin:10px;
+`
+
 interface IState {
   file: any,
 }
@@ -26,24 +32,25 @@ class FileDropZone extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <section>
+      <Dropbox>
         <Dropzone 
         multiple={false}
         onDrop={this.onDrop} 
         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
           <div>
-            Drop the first file.
+            {this.state.file? `${this.props.which} has been loaded, drop to modify.` :`drop the ${this.props.which}.`}
+            {/* Drop the first file. */}
           </div>
         </Dropzone>
-        <aside>
+        {/* <div>
           <h4>First File:</h4>
           <ul>
             {
               this.state.file?<li>{this.state.file.name}</li>:''
             }
           </ul>
-        </aside>
-      </section>
+        </div> */}
+      </Dropbox>
     );
   }
 

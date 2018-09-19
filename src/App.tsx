@@ -6,6 +6,31 @@ import {IStoreState} from './interface'
 
 import * as XLSX from 'xlsx'
 
+import styled from 'styled-components'
+
+const Outer = styled.div`
+  margin:10px auto;
+  width:550px;
+`
+
+const CheckedContainer = styled.div`
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+`
+
+const ButtonContainer = styled.div`
+  display:flex;
+  justify-content:center;
+`
+
+const Button = styled.button`
+  width: 100px;
+  height: 30px;
+  font-size:20px;
+  font-family:Arial;
+`
+
 interface IProps{
   file1: any,
   file2: any,
@@ -20,13 +45,17 @@ class App extends React.Component<IProps, any> {
   }
   public render() {
     return (
-      <div className="App">
-      <FileDropZone which="file1"/>
-      <FileDropZone which="file2"/>
-      <FileDropZone which="file3"/>
-      <FileDropZone which="file4"/>
-      <button onClick={this.startArrange}>Start</button>
-      </div>
+      <Outer>
+        <CheckedContainer>
+          <FileDropZone which="file1"/>
+          <FileDropZone which="file2"/>
+          <FileDropZone which="file3"/>
+          <FileDropZone which="file4"/>
+        </CheckedContainer>
+          <ButtonContainer>
+            <Button onClick={this.startArrange}>Start</Button>
+          </ButtonContainer>
+      </Outer>
     );
   }
 
@@ -48,25 +77,37 @@ class App extends React.Component<IProps, any> {
     }
   }
 
-  private arrange = (file1:[], file2:[], file3:[], file4:[]) :any[] => {
+  private arrange = (file1:any[], file2:any[], file3:any[], file4:any[]) :any[] => {
     // console.log(file1, file2, file3, file4)
     const arranged:any[] = []
-    arranged.push(file1[0])
+    file1[0][0] = 'original well ID'
+    arranged.push(['new well ID', 'original Plate ID', ...file1[0]])
+    let rowNum:number = 65 // 
     for (let i = 0; i < 8; ++i) {
+      let colNum:number = 1
       // line of odd number
       for (let j = 1; j <= 12; ++j) {
-        arranged.push(file1[12*i + j])
-        arranged.push(file2[12*i + j])
+        arranged.push([String.fromCharCode(rowNum)+colNum,'plate 1',...file1[12*i + j]])
+        colNum++
+        arranged.push([String.fromCharCode(rowNum)+colNum,'plate 2',...file2[12*i + j]])
+        colNum++
       }
       // line of even number
+      rowNum++
+      colNum = 1
       for (let j = 1; j <= 12; ++j) {
-        arranged.push(file3[12*i + j])
-        arranged.push(file4[12*i + j])
+        arranged.push([String.fromCharCode(rowNum)+colNum,'plate 3',...file3[12*i + j]])
+        colNum++
+        arranged.push([String.fromCharCode(rowNum)+colNum,'plate 4',...file4[12*i + j]])
+        colNum++
       }
+      rowNum++
     }
     return arranged
   }
 }
+
+
 
 function mapStateToProps(state :IStoreState) {
   // console.log(state)
