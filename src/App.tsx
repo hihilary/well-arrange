@@ -65,7 +65,7 @@ class App extends React.Component<IProps, any> {
     const file2 = this.props.file2
     const file3 = this.props.file3
     const file4 = this.props.file4
-    if (file1!=='' && file2!=='' && file3 !== '' && file4 !== '') {
+    if (file1!==undefined && file2!==undefined && file3 !== undefined && file4 !== undefined) {
       const ret = this.arrange(file1, file2, file3, file4)
       console.log(ret)
       const worksheet = XLSX.utils.aoa_to_sheet(ret);
@@ -82,9 +82,9 @@ class App extends React.Component<IProps, any> {
     const arranged:any[] = []
     file1[0][0] = 'original well ID'
     arranged.push(['new well ID', 'original Plate ID', ...file1[0]])
-    let rowNum:number = 65 // 
+    let rowNum = 65 // 
     for (let i = 0; i < 8; ++i) {
-      let colNum:number = 1
+      let colNum = 1
       // line of odd number
       for (let j = 1; j <= 12; ++j) {
         arranged.push([String.fromCharCode(rowNum)+colNum,'plate 1',...file1[12*i + j]])

@@ -7,7 +7,7 @@ import {
   FILE_LOAD,
 } from './actions'
 
-export function myReducer(state :IStoreState={file1:'',file2:'',file3:'',file4:''}, 
+export function myReducer(state :IStoreState={}, 
   action :IAction) :IStoreState {
   switch (action.type) {
     case FILE_LOAD:
